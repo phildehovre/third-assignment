@@ -20,7 +20,7 @@ from home import views as home_views
 # from blog import views as blog_views
 
 urlpatterns = [
-    path('', include("blog.urls"), name='blog_urls'),
-    path('', home_views.home, name='home'),
+    path('codestar/', include("blog.urls"), name='blog_urls'),
+    # path('', home_views.home, name='home'),
     path('admin/', admin.site.urls),
 ]
