@@ -20,3 +20,5 @@ StrEnum==0.4.15
 typing_extensions==4.10.0
 tzdata==2024.1
 urllib3==2.2.1
+django-summernote==0.8.20.0
+```

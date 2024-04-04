@@ -20,7 +20,8 @@ from home import views as home_views
 # from blog import views as blog_views
 
 urlpatterns = [
-    path('codestar/', include("blog.urls"), name='blog_urls'),
-    # path('', home_views.home, name='home'),
+    path('', include("blog.urls"), name='blog_urls'),
+    path('summernote/', include('django_summernote.urls')),
+    path('', home_views.home, name='home'),
     path('admin/', admin.site.urls),
 ]
