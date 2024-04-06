@@ -1,0 +1,11 @@
+.item_list {
+    display: flex;
+    flex-wrap: wrap;
+    margin: auto;
+    width: 100%;
+    justify-content: center;
+}
+
+.item_detail {
+    outline: 1px solid red;
+}

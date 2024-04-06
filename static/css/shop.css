@@ -1,0 +1,7 @@
+.item_list {
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    align-items: center;
+    outline: 1px solid red;
+}

@@ -1,0 +1,18 @@
+{% extends 'shop/item_list.html' %}
+
+
+{% block content %}
+
+    <article class="item_detail">
+        <h1>
+            {{ item.title }}
+        </h1>
+        <div>
+            {{ item.price }}
+        </div>
+        <p>
+            {{ item.description }}
+        </p>
+    </article>
+
+{% endblock content %}
