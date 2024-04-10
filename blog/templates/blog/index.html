@@ -8,6 +8,16 @@
 
         <!-- Blog Entries Column -->
         <div class="col-12 mt-3 left">
+            <div>
+
+                <a href="{% url 'create_post' %}" class="btn btn-primary">Create Post</a>
+                <form method="GET" >
+                    <input type="text" name="q" placeholder="Search topics..." />
+                </form>
+                {% if not_found %}
+                    <p class="error" style="color: salmon">No articles found with this term</p>
+                {% endif %}
+            </div>
             <div class="row">
                 {% for post in post_list %}
                 <div class="col-md-4">

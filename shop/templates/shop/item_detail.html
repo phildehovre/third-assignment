@@ -4,13 +4,14 @@
 
 {% block content %}
 
-    <article class="item_detail">
+    <article class="card item_detail">
         <h1>
-            {{ item.title }}
+            {{ item.name }}
         </h1>
         <div>
             {{ item.price }}
         </div>
+        <img src="{{ item.image.url }}" alt="{{ item.name }}">
         <p>
             {{ item.description }}
         </p>

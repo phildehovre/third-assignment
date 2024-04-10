@@ -7,6 +7,8 @@
             <div class="col-md-6 masthead-text">
                 <!-- Post title goes in these h1 tags -->
                 <h1 class="post-title">{{ post.title }}</h1>
+                <a href="{% url 'update_post' post.id %}" class="btn btn-primary">Edit Post</a>
+                <a href="{% url 'delete_post' post.id %}" class="btn btn-primary">Delete</a>
                 <!-- Post author goes before the | the post's created date goes after -->
                 <p class="post-subtitle">{{ post.author }} | {{ post.created_on }}</p>
             </div>
