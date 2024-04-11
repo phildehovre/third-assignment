@@ -1,23 +1,14 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.views import generic
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import login, authenticate, logout
+from django.contrib import messages
+from django.http import HttpResponse
 from .models import Post
-from .forms import PostForm, CommentForm
+from .forms import PostForm
 from django.db.models import Q
 
 
 # Create your views here.
-
-
-# class PostList(generic.ListView):
-#     '''
-#     When an instance of PostList is rendered 
-#     and the corresponding template (index.html) 
-#     is rendered, the post_list context variable 
-#     is automatically available in the template.
-#     '''
-#     queryset = Post.objects.filter(status=1)
-#     template_name = "blog/index.html"
-#     paginate_by = 6
 
 def post_list(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
@@ -36,7 +27,7 @@ def post_list(request):
 
     print(not_found)
 
-    return render(request, "blog/index.html", {"post_list": queryset, "not_found": not_found })
+    return render(request, "blog/index.html", {"post_list": queryset, "not_found": not_found, "search_term": q })
 
 
 def post_detail(request, slug):
@@ -58,7 +49,7 @@ def post_detail(request, slug):
     return render(request, "blog/post_detail.html", {"post": post},)
 
 
-
+@login_required(login_url='login_register')
 def create_post(request):
     form = PostForm(request.POST)
     if request.method == "POST":
@@ -68,6 +59,8 @@ def create_post(request):
     return render(request, "blog/post_form.html", {"form": form})
 
 
+
+@login_required(login_url='login_register')
 def update_post(request, id):
     post = Post.objects.get(id=id)
     form = PostForm(instance=post)
@@ -75,6 +68,9 @@ def update_post(request, id):
         "post": post,
         "form": form,
     }
+    if request.user != post.author:
+        return HttpResponse('You cannot update a post you did not create!')
+
     if request.method == "POST":
         form = PostForm(request.POST, instance=post)
         if form.is_valid():
@@ -82,10 +78,46 @@ def update_post(request, id):
             return redirect('home')
     return render(request, "blog/post_form.html", context)
 
+
+@login_required(login_url='login_register')
 def delete_post(request, id):
+    print(request)
     post = Post.objects.get(id=id)
+
+    if request.user != post.author:
+        return HttpResponse("You cannot delete this resource")
+
+    
     if request.method == "POST":
         print("Deleting post: " + id)
         Post.objects.get(id=id).delete()
         return redirect('home')
     return render(request, "blog/post_delete.html", {"post": post})
+
+def login_view(request):
+    page = 'login'
+    if request.method == "POST":
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        try:
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                messages.error(request, 'Successully logged in!')
+                
+        except:
+            messages.error(request, 'Username or password incorrect')
+
+    
+    return render(request, 'login_register.html', {'page': page})
+
+def user_logout(request):
+    logout(request)
+    return redirect('home')
+
+def user_register(request):
+    page = 'register'
+
+        
+    return render(request, "login_register.html", {'page': page})

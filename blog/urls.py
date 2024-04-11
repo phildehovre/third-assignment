@@ -11,5 +11,8 @@ urlpatterns = [
     path('create-post/', views.create_post, name='create_post'),
     path('update-post/<str:id>', views.update_post, name='update_post'),
     path('delete-post/<str:id>', views.delete_post, name='delete_post'),
+    path('login/', views.login_view, name='login_register'),
+    path('logout/', views.user_logout, name='user_logout'),
+    path('register/', views.user_register, name='user_register'),
     path('<slug:slug>/', views.post_detail, name='post_detail'),
 ]
