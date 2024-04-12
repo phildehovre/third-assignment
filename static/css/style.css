@@ -1,0 +1,23 @@
+.form-ctn {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;;
+    width: 100svw;
+}
+
+.form {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    max-width: 450px;
+    margin: auto;
+    gap: 1em;
+    background-color: rgb(211, 236, 245);
+    border-radius: 16px;
+    padding: 1.5em;
+
+    > input {
+        display: inline;
+    }
+}

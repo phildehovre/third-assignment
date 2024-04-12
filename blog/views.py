@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from django.http import HttpResponse
 from .models import Post
@@ -64,6 +65,7 @@ def create_post(request):
 def update_post(request, id):
     post = Post.objects.get(id=id)
     form = PostForm(instance=post)
+    # instance=post in order to pre-populate the form with the posts' existing values
     context = {
         "post": post,
         "form": form,
@@ -97,7 +99,7 @@ def delete_post(request, id):
 def login_view(request):
     page = 'login'
     if request.method == "POST":
-        username = request.POST.get('username')
+        username = request.POST.get('username').lower()
         password = request.POST.get('password')
 
         try:
@@ -119,5 +121,22 @@ def user_logout(request):
 def user_register(request):
     page = 'register'
 
+    form = UserCreationForm()
+
+    if request.method == "POST":
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            # The commit=False argument passed to the save() method 
+            # indicates that the changes made to the user instance 
+            # should not be immediately saved to the database. 
+            # This allows additional modifications to be made 
+            # to the user instance before it's saved permanently.
+            user.username = user.username.lower()
+            user.save()
+            login(request, user)
+            return redirect('home')
+        else: 
+            messages.error(request,'An error occurred during registraion, please try again')
         
-    return render(request, "login_register.html", {'page': page})
+    return render(request, "login_register.html", {'page': page, "form": form})

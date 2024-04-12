@@ -1,20 +1,29 @@
-{% extends 'shop/item_list.html' %}
-{% load static %}
+{% extends 'shop/item_list.html' %} {% load static %} {% block content %}
 
+<article class="card item_detail">
+  <h1>{{ item.name }}</h1>
+  <div>{{ item.price }}</div>
+  <img src="{{ item.image.url }}" alt="{{ item.name }}" />
+  <p>{{ item.description }}</p>
+  <div>
+    <h2>New review</h2>
+    <form method="POST">
+      {% csrf_token %} {{ form.as_p }}
+      <button type="submit" class="btn btn-primary" value="Submit">
+        Submit
+      </button>
+    </form>
+  </div>
 
-{% block content %}
+  {% for review in reviews %}
+  <div>
+    <h2>{{ review.title }}</h2>
+    <small>{{ review.author.username }} - {{ review.created_at }}</small>
+    <p>{{ review.content }}</p>
+    <p></p>
+  </div>
 
-    <article class="card item_detail">
-        <h1>
-            {{ item.name }}
-        </h1>
-        <div>
-            {{ item.price }}
-        </div>
-        <img src="{{ item.image.url }}" alt="{{ item.name }}">
-        <p>
-            {{ item.description }}
-        </p>
-    </article>
+  {% endfor %}
+</article>
 
 {% endblock content %}
