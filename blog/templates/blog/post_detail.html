@@ -37,14 +37,6 @@
     </div>
   </div>
   <div>
-    <div>
-      {% for comment in comments %}
-      <hr />
-      <h3>{{ comment.author }}</h3>
-      <small>{{ comment.created_on }}</small>
-      <p>{{comment.content}}</p>
-      {% endfor %}
-    </div>
     {% if request.user.is_authenticated %}
     <h2>Leave a comment</h2>
     <form method="post">
@@ -54,6 +46,14 @@
     </form>
   </div>
   {% endif %}
+  <div>
+    {% for comment in comments %}
+    <hr />
+    <h3>{{ comment.author }}</h3>
+    <small>{{ comment.created_on }}</small>
+    <p>{{comment.content}}</p>
+    {% endfor %}
+  </div>
 </div>
 
 {% endblock content %}

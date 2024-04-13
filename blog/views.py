@@ -56,7 +56,7 @@ def post_detail(request, slug):
             author=request.user,
             content=request.POST.get('body'),
         )
-        return redirect('home')
+        return redirect('post_detail', slug=slug)
 
     return render(request, "blog/post_detail.html", {"post": post, 'comments': comments},)
 

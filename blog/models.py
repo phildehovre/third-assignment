@@ -14,6 +14,12 @@ class Post(models.Model):
 	author=models.ForeignKey(User, on_delete=models.CASCADE, related_name="blog_posts")
 	content=models.TextField()
 	excerpt=models.TextField(blank=True)
+	"""
+	In the case of a ForeignKey being used multiple times,
+	we must specify the related_name property to make it 
+	distinct from the "author" property.
+	"""
+	participants=models.ManyToManyField(User, related_name="participants")
 	created_on=models.DateTimeField(auto_now_add=True)
 	updated_on=models.DateTimeField(auto_now=True)
 	status=models.IntegerField(choices=STATUS, default=0)
