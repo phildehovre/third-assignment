@@ -19,7 +19,7 @@ class Post(models.Model):
 	we must specify the related_name property to make it 
 	distinct from the "author" property.
 	"""
-	participants=models.ManyToManyField(User, related_name="participants")
+	participants=models.ManyToManyField(User, related_name="participants", blank=True)
 	created_on=models.DateTimeField(auto_now_add=True)
 	updated_on=models.DateTimeField(auto_now=True)
 	status=models.IntegerField(choices=STATUS, default=0)

@@ -25,7 +25,6 @@ def post_list(request):
 
     if not_found: 
        queryset = published
-
     print(not_found)
 
     return render(request, "blog/index.html", {"post_list": queryset, "not_found": not_found, "search_term": q })
@@ -48,6 +47,8 @@ def post_detail(request, slug):
     # get_object_or_404() is a shortcut function that handles the case when an object is not found.
     post = get_object_or_404(queryset, slug=slug)
     comments = post.comments.all()
+    participants = post.participants.all()
+    print(participants)
 
     if request.method == "POST":
         print(request.POST.get('body'))
@@ -56,9 +57,10 @@ def post_detail(request, slug):
             author=request.user,
             content=request.POST.get('body'),
         )
+        post.participants.add(request.user)
         return redirect('post_detail', slug=slug)
 
-    return render(request, "blog/post_detail.html", {"post": post, 'comments': comments},)
+    return render(request, "blog/post_detail.html", {"post": post, 'comments': comments, 'participants': participants},)
 
 
 @login_required(login_url='login_register')
