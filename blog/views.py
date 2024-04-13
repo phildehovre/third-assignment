@@ -4,7 +4,7 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from django.http import HttpResponse
-from .models import Post
+from .models import Post, Comment
 from .forms import PostForm
 from django.db.models import Q
 
@@ -30,7 +30,7 @@ def post_list(request):
 
     return render(request, "blog/index.html", {"post_list": queryset, "not_found": not_found, "search_term": q })
 
-
+@login_required
 def post_detail(request, slug):
     """
     Display an individual :model:`blog.Post`.
@@ -47,7 +47,18 @@ def post_detail(request, slug):
     queryset = Post.objects.filter(status=1)
     # get_object_or_404() is a shortcut function that handles the case when an object is not found.
     post = get_object_or_404(queryset, slug=slug)
-    return render(request, "blog/post_detail.html", {"post": post},)
+    comments = post.comments.all()
+
+    if request.method == "POST":
+        print(request.POST.get('body'))
+        comment = Comment.objects.create(
+            post=post,
+            author=request.user,
+            content=request.POST.get('body'),
+        )
+        return redirect('home')
+
+    return render(request, "blog/post_detail.html", {"post": post, 'comments': comments},)
 
 
 @login_required(login_url='login_register')

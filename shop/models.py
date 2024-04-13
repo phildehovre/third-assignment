@@ -26,7 +26,7 @@ class Product(models.Model):
 
 class Review(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="reviewer")
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="reviewed")
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
     content = models.TextField()
     rating = models.IntegerField(choices=RATING)

@@ -17,10 +17,13 @@
 
   {% for review in reviews %}
   <div>
-    <h2>{{ review.title }}</h2>
-    <small>{{ review.author.username }} - {{ review.created_at }}</small>
+    <hr />
+    <h2>{{ review.title }} - {{ review.rating }}</h2>
+    <p>by {{ review.author.username }}</p>
+    <small>
+      - {{ review.created_at }} - {{review.created_at|timesince}} ago</small
+    >
     <p>{{ review.content }}</p>
-    <p></p>
   </div>
 
   {% endfor %}
