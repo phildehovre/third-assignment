@@ -1,0 +1,64 @@
+{% extends 'base.html' %} {% block content %} {% load static %}
+
+<div class="masthead">
+  <div class="container">
+    <div class="row g-0">
+      <div class="col-md-6 masthead-text">
+        <!-- Post title goes in these h1 tags -->
+        <h1 class="post-title">{{ post.title }}</h1>
+        <a href="{% url 'update_post' post.id %}" class="btn btn-primary"
+          >Edit Post</a
+        >
+        <a href="{% url 'delete_post' post.id %}" class="btn btn-primary"
+          >Delete</a
+        >
+        <!-- Post author goes before the | the post's created date goes after -->
+        <p class="post-subtitle">{{ post.author }} | {{ post.created_on }}</p>
+      </div>
+      <div class="d-none d-md-block col-md-6 masthead-image">
+        <img
+          src="{% static 'images/default.jpg' %}"
+          class="scale"
+          alt="placeholder"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+<div>
+  {% comment %} {% for participant in participants %}
+  <h3>{{ participant.name }}</h3>
+  {% endfor %} {% endcomment %}
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="col card mb-4 mt-3 left top">
+      <div class="card-body">
+        <!-- The post content goes inside the card-text. -->
+        <!-- Use the | safe filter inside the template tags -->
+        <p class="card-text">{{ post.content | safe }}</p>
+      </div>
+    </div>
+  </div>
+  <div>
+    {% if request.user.is_authenticated %}
+    <h2>Leave a comment</h2>
+    <form method="post">
+      {% csrf_token %}
+      <label for="body">Comment</label>
+      <input type="textarea" name="body" />
+    </form>
+  </div>
+  {% endif %}
+  <div>
+    {% for comment in comments %}
+    <hr />
+    <h3>{{ comment.author }}</h3>
+    <small>{{ comment.created_on }}</small>
+    <p>{{comment.content}}</p>
+    {% endfor %}
+  </div>
+</div>
+
+{% endblock content %}

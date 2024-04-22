@@ -1,0 +1,32 @@
+{% extends 'shop/item_list.html' %} {% load static %} {% block content %}
+
+<article class="card item_detail">
+  <h1>{{ item.name }}</h1>
+  <div>{{ item.price }}</div>
+  <img src="{{ item.image.url }}" alt="{{ item.name }}" />
+  <p>{{ item.description }}</p>
+  <div>
+    <h2>New review</h2>
+    <form method="POST">
+      {% csrf_token %} {{ form.as_p }}
+      <button type="submit" class="btn btn-primary" value="Submit">
+        Submit
+      </button>
+    </form>
+  </div>
+
+  {% for review in reviews %}
+  <div>
+    <hr />
+    <h2>{{ review.title }} - {{ review.rating }}</h2>
+    <p>by {{ review.author.username }}</p>
+    <small>
+      - {{ review.created_at }} - {{review.created_at|timesince}} ago</small
+    >
+    <p>{{ review.content }}</p>
+  </div>
+
+  {% endfor %}
+</article>
+
+{% endblock content %}
